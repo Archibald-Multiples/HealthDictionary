@@ -1,0 +1,258 @@
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const feedbackTypeSelect = document.getElementById('feedback_type');
+    const termSuggestionFields = document.getElementById('term-suggestion-fields');
+    const termSuggestionEn = document.getElementById('term_suggestion_en');
+    const termSuggestionEwe = document.getElementById('term_suggestion_ewe');
+    const description = document.getElementById('description');
+    const feedbackForm = document.getElementById('feedback-form');
+
+    // Handle language switching for select options
+    function handleLanguageSwitch(isEwe) {
+        // Update select options text
+        feedbackTypeSelect.querySelectorAll('option span').forEach(span => {
+            if (isEwe) {
+                span.classList.toggle('d-none', !span.classList.contains('lang-ewe'));
+            } else {
+                span.classList.toggle('d-none', !span.classList.contains('lang-en'));
+            }
+        });
+    }
+
+    // Listen for language switch events
+    document.addEventListener('languageSwitch', function(e) {
+        handleLanguageSwitch(e.detail.language === 'ewe');
+    });
+
+    function toggleTermSuggestionFields() {
+        if (feedbackTypeSelect.value === 'new_term') {
+            termSuggestionFields.style.display = 'block';
+            termSuggestionEn.required = true;
+        } else {
+            termSuggestionFields.style.display = 'none';
+            termSuggestionEn.required = false;
+        }
+    }
+
+    function toggleDescriptionEweField() {
+        const descriptionEweField = document.getElementById('description-ewe-field');
+        const descriptionEwe = document.getElementById('description_ewe');
+        const newTermHelpText = document.getElementById('new-term-help-text');
+        const defaultHelpText = document.getElementById('description-help-text');
+
+        if (feedbackTypeSelect.value === 'new_term') {
+            descriptionEweField.style.display = 'block';
+            descriptionEwe.required = true;
+            newTermHelpText.style.display = 'block';
+            defaultHelpText.style.display = 'none';
+        } else {
+            descriptionEweField.style.display = 'none';
+            descriptionEwe.required = false;
+            newTermHelpText.style.display = 'none';
+            defaultHelpText.style.display = 'block';
+        }
+    }
+
+    toggleTermSuggestionFields();
+    toggleDescriptionEweField();
+    feedbackTypeSelect.addEventListener('change', toggleTermSuggestionFields);
+    feedbackTypeSelect.addEventListener('change', toggleDescriptionEweField);
+});
+</script>
+{% endblock %}
+{% extends "layout.html" %}
+
+{% block title %}Submit Feedback - Healthcare Dictionary{% endblock %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-md-8 mx-auto">
+        <h1 class="mb-4">
+            <span class="lang-en">Submit Feedback</span>
+            <span class="lang-ewe d-none">Ɖe Wò Susu Gblɔ</span>
+        </h1>
+        
+        <div class="card">
+            <div class="card-body">
+                <p class="lang-en">
+                    Your feedback helps us improve this healthcare dictionary. Please let us know about any errors,
+                    suggestions for better translations, or new terms you'd like to see added.
+                </p>
+                <p class="lang-ewe d-none">
+                    Wò susuɖeɖegblɔ kpena ɖe mía ŋu be míawɔ ɖɔɖɔɖo ɖe lãmesẽ nyagbɔgblɔwo ƒe gbeɖeɖea ŋu.
+                    Taflatse na míanya tso vodada ɖesiaɖe, gbeɖeɖe nyuitɔwo ŋuti adaŋuɖoɖowo, alo nyagbɔgblɔ
+                    yeyewo siwo nàdi be míatsɔ akpe ɖe eme la ŋu.
+                </p>
+                
+                {% if term %}
+                <div class="alert alert-info mb-4">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <span class="lang-en">
+                        You are submitting feedback for the term: <strong>{{ term.term_en }}</strong>
+                    </span>
+                    <span class="lang-ewe d-none">
+                        Èle susu ɖem le nyagbɔgblɔ sia ŋu: <strong>{{ term.term_ewe }}</strong>
+                    </span>
+                </div>
+                {% endif %}
+                
+                <form action="{{ url_for('feedback') }}" method="post" id="feedback-form">
+                    <!-- Hidden field for term ID if applicable -->
+                    {% if term %}
+                    <input type="hidden" name="term_id" value="{{ term.id }}">
+                    {% endif %}
+                    
+                    <!-- Feedback Type -->
+                    <div class="mb-3">
+                        <label for="feedback_type" class="form-label">
+                            <span class="lang-en">Feedback Type</span>
+                            <span class="lang-ewe d-none">Susuɖeɖegblɔ Ƒomevi</span>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select" id="feedback_type" name="feedback_type" required>
+                            <option value="" selected disabled>
+                                <span class="lang-en">Select a feedback type</span>
+                                <span class="lang-ewe d-none">Tia susuɖeɖegblɔ ƒomevi</span>
+                            </option>
+                            <option value="error" {% if request.args.get('feedback_type') == 'error' %}selected{% endif %}>
+                                <span class="lang-en">Report an Error</span>
+                                <span class="lang-ewe d-none">Gblɔ Be Vodada Le Eme</span>
+                            </option>
+                            <option value="suggestion" {% if request.args.get('feedback_type') == 'suggestion' %}selected{% endif %}>
+                                <span class="lang-en">Suggest Improvement</span>
+                                <span class="lang-ewe d-none">Fia Alesi Woawɔe Nyuie Wu</span>
+                            </option>
+                            <option value="new_term" {% if request.args.get('feedback_type') == 'new_term' %}selected{% endif %}>
+                                <span class="lang-en">Suggest New Term</span>
+                                <span class="lang-ewe d-none">Fia Nyagbɔgblɔ Yeye Aɖe</span>
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <!-- Term Suggestion (visible only for new_term type) -->
+                    <div class="mb-3" id="term-suggestion-fields" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="term_suggestion_en" class="form-label">
+                                    <span class="lang-en">Suggested Term (English)</span>
+                                    <span class="lang-ewe d-none">Nyagbɔgblɔ Si Nèfia (English)</span>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="term_suggestion_en" name="term_suggestion_en">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="term_suggestion_ewe" class="form-label">
+                                    <span class="lang-en">Suggested Term (Ewe)</span>
+                                    <span class="lang-ewe d-none">Nyagbɔgblɔ Si Nèfia (Eʋegbe)</span>
+                                </label>
+                                <input type="text" class="form-control" id="term_suggestion_ewe" name="term_suggestion_ewe">
+                            </div>
+                        </div>
+                        <label for="term_language" class="form-label mt-2">
+                            <span class="lang-en">Term Language</span>
+                            <span class="lang-ewe d-none">Nyagbɔgblɔa Ƒe Gbe</span>
+                        </label>
+                        <select class="form-select" id="term_language" name="term_language">
+                            <option value="en">English</option>
+                            <option value="ewe">Ewe (Eʋegbe)</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <label for="description_en" class="form-label">
+                                <span class="lang-en">Description (English)</span>
+                                <span class="lang-ewe d-none">Ŋuɖoɖo (English)</span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" id="description_en" name="description_en" rows="5" 
+                                    placeholder="Please provide details about your feedback in English..." required></textarea>
+                        </div>
+                        <div class="mb-3" id="description-ewe-field" style="display: none;">
+                            <label for="description_ewe" class="form-label">
+                                <span class="lang-en">Description (Ewe)</span>
+                                <span class="lang-ewe d-none">Ŋuɖoɖo (Eʋegbe)</span>
+                                <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control" id="description_ewe" name="description_ewe" rows="5" 
+                                    placeholder="Taflatse ŋlɔ wò susuɖeɖegblɔ ɖe Eʋegbe me..." required></textarea>
+                        </div>
+                        <div class="form-text" id="description-help-text">
+                            <span class="lang-en">
+                                Please explain what's incorrect or suggest improvements.
+                            </span>
+                            <span class="lang-ewe d-none">
+                                Taflatse ɖe nu si mesɔ o la me.
+                            </span>
+                        </div>
+                        <div class="form-text" id="new-term-help-text" style="display: none;">
+                            <span class="lang-en">
+                                For new terms, please include a definition in both English and Ewe.
+                            </span>
+                            <span class="lang-ewe d-none">
+                                Ne èle nyagbɔgblɔ yeye aɖe fiam la, taflatse tsɔ eƒe gɔmeɖeɖe siwo le English kple Eʋegbe me la kpe ɖe eŋu.
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Email (optional) -->
+                    <div class="mb-4">
+                        <label for="contact_email" class="form-label">
+                            <span class="lang-en">Your Email (optional)</span>
+                            <span class="lang-ewe d-none">Wò Email (ne èdina)</span>
+                        </label>
+                        <input type="email" class="form-control" id="contact_email" name="contact_email" 
+                               placeholder="We'll contact you if we need more information">
+                        <div class="form-text">
+                            <span class="lang-en">Your email will not be shared and will only be used to follow up on this feedback.</span>
+                            <span class="lang-ewe d-none">Womazã wò email na ame bubuwo o, woazãe ɖe feedback sia ko ŋu.</span>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-2"></i>
+                            <span class="lang-en">Submit Feedback</span>
+                            <span class="lang-ewe d-none">Ɖo Wò Susu Ɖa</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const feedbackForm = document.getElementById('feedback-form');
+    
+    feedbackForm.addEventListener('submit', function(event) {
+        let isValid = true;
+        const feedbackType = document.getElementById('feedback_type').value;
+        const termEweDescription = document.getElementById('description_ewe');
+        const termSuggestionEwe = document.getElementById('term_suggestion_ewe');
+        
+        // Validation for new term submissions
+        if (feedbackType === 'new_term') {
+            // Check if Ewe translation is provided
+            if (!termSuggestionEwe.value || termSuggestionEwe.value.trim() === '') {
+                alert('Please provide the Ewe translation for the new term');
+                isValid = false;
+            }
+            
+            // Check if Ewe description is provided and long enough
+            if (!termEweDescription.value || termEweDescription.value.trim().length < 10) {
+                alert('Please provide a detailed Ewe description/definition (at least 10 characters)');
+                isValid = false;
+            }
+        }
+        
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+});
+</script>
+{% endblock %}

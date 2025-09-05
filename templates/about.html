@@ -1,0 +1,199 @@
+{% extends "layout.html" %}
+
+{% block title %}About - Healthcare Terminology Dictionary{% endblock %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-md-10 mx-auto">
+        <h1 class="mb-4">
+            <span class="lang-en">About This Dictionary</span>
+            <span class="lang-ewe d-none">Gbeɖeɖea Ŋuti</span>
+        </h1>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="h4 mb-3">
+                    <span class="lang-en">Purpose</span>
+                    <span class="lang-ewe d-none">Taɖodzinu</span>
+                </h2>
+                <p class="lang-en">
+                    This healthcare terminology dictionary was developed to bridge the communication gap between 
+                    healthcare providers and Ewe-speaking patients. It provides translations of essential medical 
+                    terms between English and Ewe, along with clear explanations and examples to ensure proper 
+                    understanding of healthcare concepts.
+                </p>
+                <p class="lang-ewe d-none">
+                    Wowɔ lãmesẽ nyagbɔgblɔwo ƒe gbeɖeɖea sia be wòatsɔ akpe atsutsrɔe si le dɔyɔlawo kple 
+                    dɔnɔ siwo ƒoa Eʋegbe la dome la. Egbeɖea lãmesẽ nyagbɔgblɔwo tso Yevugbe me yi Eʋegbe 
+                    me, eye wòna ŋuɖoɖo kple kpɔɖeŋu siwo ana be amewo nase lãmesẽ ŋuti nyawo gɔme nyuie.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="h4 mb-3">
+                    <span class="lang-en">Features</span>
+                    <span class="lang-ewe d-none">Emetɔ Vevitɔwo</span>
+                </h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="fas fa-exchange-alt text-primary me-2"></i>
+                                <span class="lang-en">Bilingual term translation (English-Ewe)</span>
+                                <span class="lang-ewe d-none">Nyagbɔgblɔwo gbeɖeɖe le gbefɔwo dome (Yevugbe-Eʋegbe)</span>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-book-open text-primary me-2"></i>
+                                <span class="lang-en">Detailed explanations with examples</span>
+                                <span class="lang-ewe d-none">Ŋuɖoɖo tsitotsito kple kpɔɖeŋuwo</span>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-tags text-primary me-2"></i>
+                                <span class="lang-en">Categorization by medical field</span>
+                                <span class="lang-ewe d-none">Nyagbɔgblɔwo ƒe mama ɖe lãmesẽ ƒe akpa vovovowo nu</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="fas fa-search text-primary me-2"></i>
+                                <span class="lang-en">Search and filtering capabilities</span>
+                                <span class="lang-ewe d-none">Nyagbɔgblɔwo didi kple wo tiatia</span>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-wifi-slash text-primary me-2"></i>
+                                <span class="lang-en">Offline access to all content</span>
+                                <span class="lang-ewe d-none">Àte ŋu azã esiawo katã ne interneɖo mele asiwò o</span>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-comment text-primary me-2"></i>
+                                <span class="lang-en">Feedback mechanism for continual improvement</span>
+                                <span class="lang-ewe d-none">Mɔnu si dzi nàto aɖe wò susu agblɔ be woawɔ ɖɔɖɔɖo</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="h4 mb-3">
+                    <span class="lang-en">How to Use</span>
+                    <span class="lang-ewe d-none">Alesi Nàzãe</span>
+                </h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-search me-2"></i>
+                                    <span class="lang-en">Search</span>
+                                    <span class="lang-ewe d-none">Di</span>
+                                </h5>
+                                <p class="card-text lang-en">
+                                    Use the search box to find terms in either English or Ewe. 
+                                    You can search by term, or within definitions.
+                                </p>
+                                <p class="card-text lang-ewe d-none">
+                                    Zã nyadi nuɖaka la adi nyagbɔgblɔwo le Yevugbe alo Eʋegbe me. 
+                                    Àte ŋu adi nyagbɔgblɔwo ŋutɔŋutɔ alo le wo ŋuɖoɖowo me.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-filter me-2"></i>
+                                    <span class="lang-en">Browse by Category</span>
+                                    <span class="lang-ewe d-none">Di le Ɖoƒewo Nu</span>
+                                </h5>
+                                <p class="card-text lang-en">
+                                    Explore terms by medical categories such as diseases, 
+                                    symptoms, body parts, or medications.
+                                </p>
+                                <p class="card-text lang-ewe d-none">
+                                    Di nyagbɔgblɔwo ɖe wo ɖoƒewo nu, abe dɔvɔ̃wo, dɔléleawo 
+                                    ƒe dzesiwo, ŋutilãa ƒe akpawo, alo atikevo vovovowo ene.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-language me-2"></i>
+                                    <span class="lang-en">Switch Languages</span>
+                                    <span class="lang-ewe d-none">Trɔ Gbewo</span>
+                                </h5>
+                                <p class="card-text lang-en">
+                                    Toggle between English and Ewe interface using the 
+                                    language buttons in the navigation bar.
+                                </p>
+                                <p class="card-text lang-ewe d-none">
+                                    Àte ŋu atrɔ tso Yevugbe me ayi Eʋegbe me to gbetiatia 
+                                    si le mɔfiame ƒe akpa dzi la ŋu.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-wifi-slash me-2"></i>
+                                    <span class="lang-en">Offline Access</span>
+                                    <span class="lang-ewe d-none">Zãzã Ne Interneɖo Mele Asiwò O</span>
+                                </h5>
+                                <p class="card-text lang-en">
+                                    Click "Install Offline Database" on the homepage to 
+                                    enable access without internet connection.
+                                </p>
+                                <p class="card-text lang-ewe d-none">
+                                    Fia "Ɖe Nuŋlɔɖia Ɖe Wò Mɔ̀ Dzi" si le axa gbãtɔ dzi 
+                                    la dzi be nàte ŋu azãe ne interneɖo mele asiwò o.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h4 mb-3">
+                    <span class="lang-en">Contribute</span>
+                    <span class="lang-ewe d-none">Kpekpeɖeŋu</span>
+                </h2>
+                <p class="lang-en">
+                    This dictionary is continually improving. If you notice any errors, have suggestions for 
+                    better translations, or would like to suggest new terms to be added, please use the 
+                    <a href="{{ url_for('feedback') }}">feedback form</a>. Your contributions help make this 
+                    resource more accurate and useful for everyone.
+                </p>
+                <p class="lang-ewe d-none">
+                    Míele gbeɖeɖea sia ɖɔ ɖom ɖasiɖa sia ɖasiɖa. Ne èkpɔ vodada aɖewo, susu aɖewo le asiwò 
+                    tso alesi woate ŋu agbeɖe nyawo nyuie wu ŋu, alo èdi be yeafia nyagbɔgblɔ yeye aɖewo 
+                    si woatsɔ akpe ɖe gbeɖeɖea ŋu la, taflatse zã 
+                    <a href="{{ url_for('feedback') }}">susuɖeɖegblɔ fɔma</a>. Wò kpekpeɖeŋu ana be gbeɖeɖea 
+                    sia nanyo ɖe edzi na amewo katã.
+                </p>
+                <div class="text-center mt-3">
+                    <a href="{{ url_for('feedback') }}" class="btn btn-primary">
+                        <i class="fas fa-comment me-2"></i>
+                        <span class="lang-en">Submit Feedback</span>
+                        <span class="lang-ewe d-none">Ɖe Wò Susu Gblɔ</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

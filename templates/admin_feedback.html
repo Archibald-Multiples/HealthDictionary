@@ -1,0 +1,85 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h2>Feedback Submissions</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Suggestion (English)</th>
+            <th>Suggestion (Ewe)</th>
+            <th>Language</th>
+            <th>Description (English)</th>
+            <th>Description (Ewe)</th>
+            <th>User Email</th>
+            <th>Reply</th>
+            <th>Approve/Reject</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for fb in feedback_list %}
+        <tr>
+            <td>{{ fb.id }}</td>
+            <td>{{ fb.feedback_type }}</td>
+            <td>
+                {{ fb.term_suggestion_en or '[Term needed]' }}
+            </td>
+            <td>
+                {{ fb.term_suggestion_ewe or '' }}
+            </td>
+            <td>{{ fb.term_language }}</td>
+            <td>
+                {% if fb.term_language == 'en' and fb.description %}
+                    {{ fb.description }}
+                {% elif fb.term_language == 'ewe' and fb.description %}
+                    [English description needed]
+                {% else %}
+                    [English description needed]
+                {% endif %}
+            </td>
+            <td>
+                {% if fb.term_language == 'ewe' and fb.term_suggestion == 'penis' %}
+                    Ŋutsuvi ƒe ŋutilã ƒe akpa si kpe ɖe tsiɖeɖe kple vivi ŋu.
+                {% elif fb.term_language == 'ewe' and fb.description %}
+                    {{ fb.description }}
+                {% elif fb.term_language == 'en' and fb.description %}
+                    [Ewe description needed]
+                {% else %}
+                    [Ewe description needed]
+                {% endif %}
+            </td>
+            <td>{{ fb.contact_email }}</td>
+            <td>
+                {% if fb.contact_email %}
+                <form method="post" action="{{ url_for('reply_feedback', feedback_id=fb.id) }}">
+                    <textarea name="reply_message" placeholder="Type reply..." required rows="2" class="form-control mb-1"></textarea>
+                    <button type="submit" class="btn btn-sm btn-primary">Send</button>
+                </form>
+                {% else %}
+                No email
+                {% endif %}
+            </td>
+            <td>
+                {% if fb.term_suggestion_en or fb.term_suggestion_ewe %}
+                <form method="post" action="{{ url_for('approve_suggestion', feedback_id=fb.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Add this suggested term?');">Approve</button>
+                </form>
+                <form method="post" action="{{ url_for('reject_suggestion', feedback_id=fb.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Reject and remove this suggestion?');">Reject</button>
+                </form>
+                {% else %}
+                -
+                {% endif %}
+            </td>
+            <td>
+                <form method="post" action="{{ url_for('delete_feedback', feedback_id=fb.id) }}" onsubmit="return confirm('Delete this feedback?');">
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('admin_logout') }}" class="btn btn-secondary">Logout</a>
+{% endblock %}

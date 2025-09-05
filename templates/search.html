@@ -1,0 +1,179 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {% if query %}
+        Search Results: {{ query }} - Healthcare Dictionary
+    {% else %}
+        Search - Healthcare Dictionary
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-10 mx-auto">
+        <h1 class="mb-4">
+            {% if query %}
+                <span class="lang-en">Search Results for "{{ query }}"</span>
+                <span class="lang-ewe d-none">Nusiwo Nèdi "{{ query }}"</span>
+            {% elif category %}
+                <span class="lang-en">{{ category.name_en }}</span>
+                <span class="lang-ewe d-none">{{ category.name_ewe }}</span>
+            {% else %}
+                <span class="lang-en">Search Healthcare Terms</span>
+                <span class="lang-ewe d-none">Di Lãmesẽ Nyagbɔgblɔwo</span>
+            {% endif %}
+        </h1>
+        
+        <!-- Search Form -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form action="{{ url_for('search') }}" method="get" id="search-form">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="input-group mb-3">
+                                <input type="text" name="q" id="search-input" class="form-control" 
+                                       value="{{ query }}" placeholder="Search for a term...">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search"></i> 
+                                    <span class="d-none d-md-inline ms-1">Search</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <select name="category" id="category-filter" class="form-select mb-3">
+                                <option value="">All Categories</option>
+                                {% for cat in categories %}
+                                <option value="{{ cat.id }}" {% if selected_category == cat.id|string %}selected{% endif %}>
+                                    <span class="lang-en">{{ cat.name_en }}</span>
+                                    <span class="lang-ewe d-none">{{ cat.name_ewe }}</span>
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="lang" id="searchLangEn" value="en" checked>
+                                <label class="form-check-label" for="searchLangEn">English</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="lang" id="searchLangEwe" value="ewe">
+                                <label class="form-check-label" for="searchLangEwe">Ewe</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <button type="button" id="clear-search" class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-times me-1"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Results -->
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h5 mb-3">
+                    {% if category %}
+                        <span class="lang-en">Terms in {{ category.name_en }}</span>
+                        <span class="lang-ewe d-none">Nyagbɔgblɔwo le {{ category.name_ewe }} Me</span>
+                    {% else %}
+                        <span class="lang-en">Search Results</span>
+                        <span class="lang-ewe d-none">Nusiwo Nèdi</span>
+                    {% endif %}
+                    <span class="badge bg-secondary ms-2">{{ terms|length }}</span>
+                </h2>
+                
+                <div class="list-group mb-3" id="search-results">
+                    {% for term in terms %}
+                    <a href="{{ url_for('term_detail', term_id=term.id) }}" class="list-group-item list-group-item-action term-item" data-term-id="{{ term.id }}">
+                        <div>
+                            <strong>English:</strong> {{ term.term_en }}<br>
+                            <strong>Ewe:</strong> {{ term.term_ewe }}<br>
+                            <strong>Meaning (English):</strong> {{ term.definition_en|truncate(100) }}<br>
+                            <strong>Meaning (Ewe):</strong> {{ term.definition_ewe|truncate(100) }}
+                        </div>
+                    </a>
+                    {% endfor %}
+                    {% if ewe_translation %}
+                    <div class="list-group-item list-group-item-action term-item bg-light">
+                        <div>
+                            <strong>Meaning (English):</strong> {{ query }}<br>
+                            <strong>Meaning (Ewe):</strong> {{ ewe_translation }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if glosbe_results and glosbe_results|length > 0 %}
+                    <div class="list-group-item bg-light">
+                        <div>
+                            <strong>Glosbe Results:</strong>
+                            <ul class="mb-0">
+                                {% for result in glosbe_results %}
+                                    <li>{{ result }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% if not terms %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        {% if query %}
+                            <span class="lang-en">No results found for "{{ query }}". Try a different search term or category.</span>
+                            <span class="lang-ewe d-none">Nyagbɔgblɔ aɖeke medo ɖe "{{ query }}" ŋu o. Di nyagbɔgblɔ bubu alo ɖoƒe bubu.</span>
+                        {% else %}
+                            <span class="lang-en">No terms found. Try a different category or search term.</span>
+                            <span class="lang-ewe d-none">Nyagbɔgblɔ aɖeke meli o. Di ɖoƒe bubu alo nyagbɔgblɔ bubu.</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h3 class="h6 mb-3">
+                            <span class="lang-en">Don't see what you're looking for?</span>
+                            <span class="lang-ewe d-none">Mèkpɔ nusi nèle diam o?</span>
+                        </h3>
+                        <a href="{{ url_for('feedback') }}?feedback_type=new_term{% if query %}&term_suggestion={{ query }}{% endif %}" class="btn btn-outline-primary">
+                            <i class="fas fa-plus-circle me-2"></i>
+                            <span class="lang-en">Suggest a New Term</span>
+                            <span class="lang-ewe d-none">Fia Nyagbɔgblɔ Yeye Aɖe</span>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var clearSearchBtn = document.getElementById('clear-search');
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', function() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('category-filter').value = '';
+            document.getElementById('search-form').submit();
+        });
+    }
+    // Highlight search term in results if present
+    if ('{{ query }}') {
+        highlightSearchTerms('{{ query }}');
+    }
+});
+
+function highlightSearchTerms(query) {
+    const terms = document.querySelectorAll('.term-item');
+    if (!query || query.length < 3) return;
+    const regex = new RegExp(query, 'gi');
+    terms.forEach(term => {
+        const text = term.innerHTML;
+        term.innerHTML = text.replace(regex, match => `<mark>${match}</mark>`);
+    });
+}
+</script>
+{% endblock %}s

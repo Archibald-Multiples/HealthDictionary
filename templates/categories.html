@@ -1,0 +1,90 @@
+ {% extends "layout.html" %}
+
+{% block title %}Categories - Healthcare Dictionary{% endblock %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-md-10 mx-auto">
+        <h1 class="mb-4">
+            <span class="lang-en">Medical Term Categories</span>
+            <span class="lang-ewe d-none">Lãmesẽ Nyagbɔgblɔwo Ƒe Ɖoƒewo</span>
+        </h1>
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for category in categories %}
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h2 class="card-title h5">
+                            <span class="lang-en">{{ category.name_en }}</span>
+                            <span class="lang-ewe d-none">{{ category.name_ewe }}</span>
+                        </h2>
+                        <p class="card-text">
+                            <span class="lang-en">{{ category.description_en }}</span>
+                            <span class="lang-ewe d-none">{{ category.description_ewe }}</span>
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('category_detail', category_id=category.id) }}" class="btn btn-primary w-100">
+                            <span class="lang-en">View Terms</span>
+                            <span class="lang-ewe d-none">Kpɔ Nyagbɔgblɔwo</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Category Overview -->
+        <div class="card mt-5">
+            <div class="card-header">
+                <h2 class="h4 mb-0">
+                    <span class="lang-en">Category Overview</span>
+                    <span class="lang-ewe d-none">Ɖoƒewo Katã</span>
+                </h2>
+            </div>
+            <div class="card-body">
+                <p class="lang-en">
+                    Terms in this dictionary are organized into distinct categories to help you find related 
+                    healthcare terminology quickly. Each category represents a different aspect of healthcare 
+                    and medical knowledge.
+                </p>
+                <p class="lang-ewe d-none">
+                    Nyagbɔgblɔwo le gbeɖeɖea sia me la, woma wo ɖe ɖoƒe vovovowo be woakpe ɖe ŋuwò nàte 
+                    ŋu adi nyagbɔgblɔ siwo ƒomevi wɔnɛ la kaba. Ɖoƒe ɖesiaɖe tsi tre na lãmesẽ ƒe akpa 
+                    vovovowo kple dɔyɔyɔ ŋuti sidzedze.
+                </p>
+                
+                <div class="table-responsive mt-3">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    <span class="lang-en">Category</span>
+                                    <span class="lang-ewe d-none">Ɖoƒe</span>
+                                </th>
+                                <th scope="col" class="lang-en">English Description</th>
+                                <th scope="col" class="lang-ewe d-none">Eʋegbe Me Ŋuɖoɖo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for category in categories %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('category_detail', category_id=category.id) }}">
+                                        <span class="lang-en">{{ category.name_en }}</span>
+                                        <span class="lang-ewe d-none">{{ category.name_ewe }}</span>
+                                    </a>
+                                </td>
+                                <td class="lang-en">{{ category.description_en }}</td>
+                                <td class="lang-ewe d-none">{{ category.description_ewe }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block title %}Server Error - Healthcare Dictionary{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto text-center">
+        <div class="card border-danger">
+            <div class="card-body">
+                <h1 class="display-1 text-danger mb-4">
+                    <i class="fas fa-exclamation-circle"></i> 500
+                </h1>
+                <h2 class="mb-4">
+                    <span class="lang-en">Server Error</span>
+                    <span class="lang-ewe d-none">Server Ƒe Vodada</span>
+                </h2>
+                <p class="lead mb-4">
+                    <span class="lang-en">
+                        Sorry, something went wrong on our end. We're working to fix the issue.
+                    </span>
+                    <span class="lang-ewe d-none">
+                        Taflatse, vodada aɖe dzɔ le mía gome. Míele dɔ wɔm be míaɖɔe ɖo.
+                    </span>
+                </p>
+                
+                <div class="mt-5">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-home me-2"></i>
+                        <span class="lang-en">Return to Homepage</span>
+                        <span class="lang-ewe d-none">Trɔ Yi Axa Gbãtɔ</span>
+                    </a>
+                    
+                    <button onclick="location.reload()" class="btn btn-outline-secondary btn-lg ms-2">
+                        <i class="fas fa-sync-alt me-2"></i>
+                        <span class="lang-en">Try Again</span>
+                        <span class="lang-ewe d-none">Gatee Kpɔ</span>
+                    </button>
+                </div>
+                
+                <div class="alert alert-info mt-4">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <span class="lang-en">
+                        If you're experiencing offline mode, some functionality may be limited.
+                        Please check your internet connection.
+                    </span>
+                    <span class="lang-ewe d-none">
+                        Ne èle offline mɔ̀ dzi la, ɖewohĩ ŋusẽ aɖewo mate ŋu azɔ o.
+                        Taflatse kpɔ wò interneɖo ɖa.
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <p>
+                <span class="lang-en">
+                    If this problem persists, please <a href="{{ url_for('feedback') }}">report the issue</a>.
+                </span>
+                <span class="lang-ewe d-none">
+                    Ne kuxi sia gale edzi yim la, taflatse <a href="{{ url_for('feedback') }}">na míanya tso eŋu</a>.
+                </span>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

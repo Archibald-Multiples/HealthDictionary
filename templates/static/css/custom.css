@@ -1,0 +1,173 @@
+/* Background Slideshow Styles */
+#background-slideshow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 30s ease-in-out;
+    filter: blur(2px) brightness(0.7);
+}
+/* Custom styles for Healthcare Dictionary App */
+
+/* General Styling */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+footer {
+    margin-top: auto;
+}
+
+/* Card styling */
+.card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.category-card {
+    border-left: 4px solid var(--bs-primary);
+}
+
+/* Header styling */
+.dictionary-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.dictionary-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+.dictionary-header .subtitle {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+/* Term list styling */
+.term-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.term-card {
+    background: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    padding: 1.5rem 2rem;
+    min-width: 260px;
+    max-width: 340px;
+    flex: 1 1 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+.term-card:hover {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+    transform: translateY(-4px) scale(1.03);
+}
+
+.term-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.75rem;
+}
+.term-en {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1a237e;
+}
+.term-ewe {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #388e3c;
+    margin-left: 1rem;
+}
+
+.term-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    color: #555;
+}
+.term-meta .category {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 0.2em 0.7em;
+    border-radius: 1em;
+    font-size: 0.9em;
+}
+.term-meta .view-link {
+    color: #1976d2;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.term-meta .view-link:hover {
+    color: #0d47a1;
+    text-decoration: underline;
+}
+
+/* Search highlight */
+mark {
+    background-color: rgba(var(--bs-warning-rgb), 0.3);
+    padding: 0.1em 0.2em;
+    border-radius: 0.2em;
+    color: var(--bs-light);
+}
+
+/* Offline status indicator */
+.connection-status .badge {
+    font-size: 0.75rem;
+}
+
+/* Language toggle styling */
+.language-toggle .btn-outline-light.active {
+    background-color: var(--bs-light);
+    color: var(--bs-dark);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-title {
+        font-size: 1.1rem;
+    }
+    
+    .display-4 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .term-list {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .term-card {
+        max-width: 100%;
+        min-width: 0;
+        padding: 1rem;
+    }
+}
+
+/* Custom styles for language toggling */
+.lang-ewe, .lang-en {
+    transition: opacity 0.3s ease-in-out;
+}

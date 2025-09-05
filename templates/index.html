@@ -1,0 +1,168 @@
+{% extends "layout.html" %}
+
+{% block title %}Healthcare Terminology Dictionary - English & Ewe{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto text-center">
+        <h1 class="display-4 mb-4">
+            <span class="lang-en">Healthcare Terminology Dictionary</span>
+            <span class="lang-ewe d-none">Lãmesẽ Nyagbɔgblɔwo ƒe Gbeɖeɖea</span>
+        </h1>
+        <p class="lead mb-5">
+            <span class="lang-en">A bilingual dictionary for healthcare terminology in English and Ewe</span>
+            <span class="lang-ewe d-none">Gbeɖeɖea si me wòate ŋu adi lãmesẽ nyagbɔgblɔwo le Yevugbe kple Eʋegbe me</span>
+        </p>
+    </div>
+</div>
+
+<!-- Search Box -->
+<div class="row mb-5">
+    <div class="col-lg-8 mx-auto">
+        <div class="card bg-dark">
+            <div class="card-body">
+                <form action="{{ url_for('search') }}" method="get" class="search-form">
+                    <div class="input-group mb-3">
+                        <input type="text" name="q" class="form-control form-control-lg" 
+                               placeholder="Search for a medical term..." 
+                               aria-label="Search for a medical term">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                            <span class="d-none d-md-inline ms-1">Search</span>
+                        </button>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <select name="category" class="form-select mb-2">
+                                <option value="">All Categories</option>
+                                {% for category in categories %}
+                                <option value="{{ category.id }}">
+                                    <span class="lang-en">{{ category.name_en }}</span>
+                                    <span class="lang-ewe d-none">{{ category.name_ewe }}</span>
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="lang" id="searchLangEn" value="en" checked>
+                                <label class="form-check-label" for="searchLangEn">English</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="lang" id="searchLangEwe" value="ewe">
+                                <label class="form-check-label" for="searchLangEwe">Ewe</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Categories Quick Access -->
+<div class="row mb-5">
+    <div class="col-12">
+        <h2 class="h4 mb-4">
+            <span class="lang-en">Browse by Category</span>
+            <span class="lang-ewe d-none">Di le Ɖoƒewo Nu</span>
+        </h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            {% for category in categories %}
+            <div class="col">
+                <div class="card h-100 category-card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <span class="lang-en">{{ category.name_en }}</span>
+                            <span class="lang-ewe d-none">{{ category.name_ewe }}</span>
+                        </h5>
+                        <p class="card-text small">
+                            <span class="lang-en">{{ category.description_en|truncate(80) }}</span>
+                            <span class="lang-ewe d-none">{{ category.description_ewe|truncate(80) }}</span>
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('category_detail', category_id=category.id) }}" class="btn btn-sm btn-outline-primary w-100">
+                            <span class="lang-en">View Terms</span>
+                            <span class="lang-ewe d-none">Kpɔ Nyagbɔgblɔwo</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Recent Terms -->
+<div class="row">
+    <div class="col-12">
+        <h2 class="h4 mb-4">
+            <span class="lang-en">Recently Added Terms</span>
+            <span class="lang-ewe d-none">Nyagbɔgblɔ Siwo Wotsɔ Ɖe Eme Nyitsɔ</span>
+        </h2>
+        <div class="list-group">
+            {% for term in recent_terms %}
+            <a href="{{ url_for('term_detail', term_id=term.id) }}" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">
+                        <span class="lang-en">{{ term.term_en }}</span>
+                        <span class="lang-ewe d-none">{{ term.term_ewe }}</span>
+                    </h5>
+                    <small>
+                        <span class="badge bg-primary">
+                            <span class="lang-en">{{ term.category.name_en }}</span>
+                            <span class="lang-ewe d-none">{{ term.category.name_ewe }}</span>
+                        </span>
+                    </small>
+                </div>
+                <p class="mb-1">
+                    <span class="lang-en">{{ term.definition_en|truncate(120) }}</span>
+                    <span class="lang-ewe d-none">{{ term.definition_ewe|truncate(120) }}</span>
+                </p>
+            </a>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('search') }}" class="btn btn-outline-primary">
+                <span class="lang-en">View All Terms</span>
+                <span class="lang-ewe d-none">Kpɔ Nyagbɔgblɔwo Katã</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Offline Access Info -->
+<div class="row mt-5">
+    <div class="col-md-8 mx-auto">
+        <div class="card border-info">
+            <div class="card-header bg-info text-white">
+                <i class="fas fa-info-circle me-2"></i>
+                <span class="lang-en">Offline Access Available</span>
+                <span class="lang-ewe d-none">Àte Ŋu Azã Gbeɖeɖea Ne Interneɖo Mele Asiwò O</span>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    <span class="lang-en">
+                        This dictionary works offline! Once loaded, you can access all terms without an internet connection.
+                        The database will be stored on your device.
+                    </span>
+                    <span class="lang-ewe d-none">
+                        Gbeɖeɖea sia ate ŋu azɔ ne interneɖo mele asiwò o! Ne èʋu nyagbɔgblɔwo ƒe nuŋlɔɖia zi ɖeka ko la, àte ŋu azã wo ne interneɖo mele asiwò o.
+                        Woadzra nuŋlɔɖia ɖe wò mɔ̀ dzi.
+                    </span>
+                </p>
+                <button id="install-db-btn" class="btn btn-outline-info">
+                    <i class="fas fa-download me-2"></i>
+                    <span class="lang-en">Install Offline Database</span>
+                    <span class="lang-ewe d-none">Ɖe Nuŋlɔɖia Ɖe Wò Mɔ̀ Dzi</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
+{% endblock %}

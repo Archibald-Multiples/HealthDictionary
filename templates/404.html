@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}Page Not Found - Healthcare Dictionary{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto text-center">
+        <div class="card border-warning">
+            <div class="card-body">
+                <h1 class="display-1 text-warning mb-4">
+                    <i class="fas fa-exclamation-triangle"></i> 404
+                </h1>
+                <h2 class="mb-4">
+                    <span class="lang-en">Page Not Found</span>
+                    <span class="lang-ewe d-none">Axa La Meli O</span>
+                </h2>
+                <p class="lead mb-4">
+                    <span class="lang-en">
+                        We couldn't find the page you were looking for. The link may be broken, 
+                        or the page may have been removed.
+                    </span>
+                    <span class="lang-ewe d-none">
+                        Míete ŋu kpɔ axa si dim nèle o. Kadodo la ŋe, alo woɖe axa la ɖa.
+                    </span>
+                </p>
+                
+                <div class="mt-5">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-home me-2"></i>
+                        <span class="lang-en">Return to Homepage</span>
+                        <span class="lang-ewe d-none">Trɔ Yi Axa Gbãtɔ</span>
+                    </a>
+                    
+                    <p class="mt-3">
+                        <span class="lang-en">or try searching for what you need:</span>
+                        <span class="lang-ewe d-none">alo di nusi dim nèle:</span>
+                    </p>
+                    
+                    <div class="row">
+                        <div class="col-md-8 mx-auto">
+                            <form action="{{ url_for('search') }}" method="get">
+                                <div class="input-group">
+                                    <input type="text" name="q" class="form-control" 
+                                           placeholder="Search for a medical term...">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <p>
+                <span class="lang-en">
+                    If you believe this is an error, please <a href="{{ url_for('feedback') }}">let us know</a>.
+                </span>
+                <span class="lang-ewe d-none">
+                    Ne ède dzesi be vodada aɖe le eme la, taflatse <a href="{{ url_for('feedback') }}">na míanya</a>.
+                </span>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

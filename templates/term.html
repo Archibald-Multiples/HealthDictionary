@@ -1,0 +1,361 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ term.term_en }} | Healthcare Dictionary{% endblock %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-md-10 mx-auto">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ url_for('index') }}">
+                        <span class="lang-en">Home</span>
+                        <span class="lang-ewe d-none">Axa Gbãtɔ</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ url_for('category_detail', category_id=term.category_id) }}">
+                        <span class="lang-en">{{ term.category.name_en }}</span>
+                        <span class="lang-ewe d-none">{{ term.category.name_ewe }}</span>
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span class="lang-en">{{ term.term_en }}</span>
+                    <span class="lang-ewe d-none">{{ term.term_ewe }}</span>
+                </li>
+            </ol>
+        </nav>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="h3 mb-0">
+                        <span class="lang-en">{{ term.term_en }}</span>
+                        <span class="lang-ewe d-none">{{ term.term_ewe }}</span>
+                    </h1>
+                    <span class="badge bg-primary">
+                        <span class="lang-en">{{ term.category.name_en }}</span>
+                        <span class="lang-ewe d-none">{{ term.category.name_ewe }}</span>
+                    </span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">
+                                <h2 class="h5 mb-0">
+                                    <i class="fas fa-language me-2"></i> English
+                                </h2>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="h6 mb-2">Term</h3>
+                                <p class="mb-3"><strong>{{ term.term_en }}</strong></p>
+                                
+                                <h3 class="h6 mb-2">Definition</h3>
+                                <p class="mb-3">{{ term.definition_en }}</p>
+                                
+                                {% if term.example_en %}
+                                <h3 class="h6 mb-2">Example</h3>
+                                <p class="mb-0 fst-italic">{{ term.example_en }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">
+                                <h2 class="h5 mb-0">
+                                    <i class="fas fa-language me-2"></i> Ewe (Eʋegbe)
+                                </h2>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="h6 mb-2">Nyagbɔgblɔ</h3>
+                                <p class="mb-3"><strong>{{ term.term_ewe }}</strong></p>
+                                
+                                {% if term.pronunciation %}
+                                <h3 class="h6 mb-2">Nuƒoƒo</h3>
+                                <p class="mb-3">{{ term.pronunciation }}</p>
+                                {% endif %}
+                                
+                                <h3 class="h6 mb-2">Gɔmeɖeɖe</h3>
+                                <p class="mb-3">{{ term.definition_ewe }}</p>
+                                
+                                {% if term.example_ewe %}
+                                <h3 class="h6 mb-2">Kpɔɖeŋu</h3>
+                                <p class="mb-0 fst-italic">{{ term.example_ewe }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <h3 class="h5 mb-3">
+                            <span class="lang-en">Actions</span>
+                            <span class="lang-ewe d-none">Nusiwo Nàte Ŋu Awɔ</span>
+                        </h3>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-outline-secondary" id="save-term" data-term-id="{{ term.id }}">
+                                <i class="fas fa-bookmark me-2"></i>
+                                <span class="lang-en">Save Term</span>
+                                <span class="lang-ewe d-none">Dzra Nyagbɔgblɔa</span>
+                            </button>
+                            
+                            <a href="{{ url_for('feedback') }}?term_id={{ term.id }}&feedback_type=error" class="btn btn-outline-warning">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <span class="lang-en">Report Error</span>
+                                <span class="lang-ewe d-none">Gblɔ Be Vodada Le Eme</span>
+                            </a>
+                            
+                            <a href="{{ url_for('feedback') }}?term_id={{ term.id }}&feedback_type=suggestion" class="btn btn-outline-primary">
+                                <i class="fas fa-lightbulb me-2"></i>
+                                <span class="lang-en">Suggest Improvement</span>
+                                <span class="lang-ewe d-none">Fia Alesi Woawɔe Nyuie Wu</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-muted small">
+                <span class="lang-en">Last updated: {{ term.updated_at.strftime('%Y-%m-%d') }}</span>
+                <span class="lang-ewe d-none">Wotrɔ wo mlɔeba le: {{ term.updated_at.strftime('%Y-%m-%d') }}</span>
+            </div>
+        </div>
+        
+        <!-- Related Terms -->
+        <div class="mt-5">
+            <h2 class="h4 mb-3">
+                <span class="lang-en">Related Terms</span>
+                <span class="lang-ewe d-none">Nyagbɔgblɔ Siwo Ƒomevi Wɔnɛ</span>
+            </h2>
+            
+            <div class="row" id="related-terms">
+                <!-- This will be populated by JavaScript -->
+                <div class="col-12">
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AI Explanation Section -->
+        <div class="mt-5">
+            <h2 class="h4 mb-3">
+                <span class="lang-en">AI Explanation</span>
+                <span class="lang-ewe d-none">AI ƒe Nyateƒea</span>
+            </h2>
+            
+            <button id="explain-btn" class="btn btn-info">
+                <i class="fas fa-robot me-2"></i>
+                <span class="lang-en">Explain with AI</span>
+                <span class="lang-ewe d-none">AI ƒe Nyateƒea</span>
+            </button>
+            
+            <div id="ai-explanation" class="mt-3">
+                <!-- AI explanation will be injected here -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle save term functionality
+    const saveTermBtn = document.getElementById('save-term');
+    if (saveTermBtn) {
+        saveTermBtn.addEventListener('click', function() {
+            const termId = this.getAttribute('data-term-id');
+            saveTermToLocal(termId);
+        });
+    }
+    
+    // Load related terms
+    loadRelatedTerms({{ term.id }}, {{ term.category_id }});
+    
+    // Handle AI explanation
+    const explainBtn = document.getElementById('explain-btn');
+    if (explainBtn) {
+        explainBtn.addEventListener('click', function() {
+            const termId = {{ term.id }};
+            fetchAIExplanation(termId);
+        });
+    }
+});
+
+function saveTermToLocal(termId) {
+    // Fetch the term data
+    fetch(`/api/term/${termId}`)
+        .then(response => response.json())
+        .then(term => {
+            // Get currently saved terms
+            let savedTerms = JSON.parse(localStorage.getItem('savedTerms') || '[]');
+            
+            // Check if the term is already saved in localStorage (compare as strings for safety)
+            const exists = savedTerms.some(t => String(t.id) === String(termId));
+            
+            if (!exists) {
+                // Add to saved terms
+                savedTerms.push(term);
+                localStorage.setItem('savedTerms', JSON.stringify(savedTerms));
+                
+                // Update button
+                const saveBtn = document.getElementById('save-term');
+                saveBtn.innerHTML = '<i class="fas fa-check me-2"></i> Term Saved';
+                saveBtn.classList.remove('btn-outline-secondary');
+                saveBtn.classList.add('btn-success');
+                saveBtn.disabled = true;
+                
+                // Show success toast or alert
+                alert('Term saved successfully! You can view it offline.');
+            } else {
+                alert('This term is already saved.');
+            }
+        })
+        .catch(error => {
+            console.error('Error saving term:', error);
+            alert('Failed to save term. Please try again.');
+        });
+}
+
+function loadRelatedTerms(termId, categoryId) {
+    // Fetch related terms from the same category
+    fetch(`/api/search?category=${categoryId}`)
+        .then(response => response.json())
+        .then(terms => {
+            // Filter out the current term and limit to 4 related terms
+            const relatedTerms = terms
+                .filter(t => String(t.id) !== String(termId))
+                .slice(0, 4);
+            
+            const relatedTermsContainer = document.getElementById('related-terms');
+            
+            if (relatedTerms.length === 0) {
+                relatedTermsContainer.innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <span class="lang-en">No related terms found in this category.</span>
+                            <span class="lang-ewe d-none">Nyagbɔgblɔ ƒomevi aɖeke meli le ɖoƒe sia me o.</span>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Build related terms HTML
+            let relatedTermsHTML = '';
+            relatedTerms.forEach(rt => {
+                relatedTermsHTML += `
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <span class="lang-en">${rt.term_en}</span>
+                                    <span class="lang-ewe d-none">${rt.term_ewe}</span>
+                                </h5>
+                                <p class="card-text small">
+                                    <span class="lang-en">${rt.definition_en.substring(0, 80)}...</span>
+                                    <span class="lang-ewe d-none">${rt.definition_ewe.substring(0, 80)}...</span>
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/term/${rt.id}" class="btn btn-sm btn-outline-primary w-100">
+                                    <span class="lang-en">View Term</span>
+                                    <span class="lang-ewe d-none">Kpɔ Nyagbɔgblɔa</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            relatedTermsContainer.innerHTML = relatedTermsHTML;
+            
+            // Re-apply language selection
+            const currentLang = localStorage.getItem('language') || 'en';
+            if (currentLang === 'ewe') {
+                document.querySelectorAll('.lang-en').forEach(el => el.classList.add('d-none'));
+                document.querySelectorAll('.lang-ewe').forEach(el => el.classList.remove('d-none'));
+            }
+        })
+        .catch(error => {
+            console.error('Error loading related terms:', error);
+            document.getElementById('related-terms').innerHTML = `
+                <div class="col-12">
+                    <div class="alert alert-danger">
+                        <span class="lang-en">Error loading related terms. Please try again later.</span>
+                        <span class="lang-ewe d-none">Nyagbɔgblɔ ƒomevi bubuwo ƒe didi do kpo. Taflatse gatee kpɔ emegbe.</span>
+                    </div>
+                </div>
+            `;
+        });
+}
+
+function fetchAIExplanation(termId) {
+    const explanationContainer = document.getElementById('ai-explanation');
+    explanationContainer.innerHTML = '<div class="text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+    
+    // Fetch AI explanation from the server
+    fetch(`/api/explain_term/${termId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.explanation) {
+                // Display the AI-generated explanation
+                const explanationHTML = `
+                    <div class="alert alert-info">
+                        <h4 class="alert-heading">AI Explanation</h4>
+                        <p>${data.explanation}</p>
+                    </div>
+                `;
+                explanationContainer.innerHTML = explanationHTML;
+            } else {
+                explanationContainer.innerHTML = `
+                    <div class="alert alert-warning">
+                        <span class="lang-en">No explanation found for this term.</span>
+                        <span class="lang-ewe d-none">Aɖe si le eŋu nyateƒea aɖeke nɔ.</span>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching AI explanation:', error);
+            explanationContainer.innerHTML = `
+                <div class="alert alert-danger">
+                    <span class="lang-en">Error fetching explanation. Please try again later.</span>
+                    <span class="lang-ewe d-none">Nyateƒea bubuwo ƒe didi do kpo. Taflatse gatee kpɔ emegbe.</span>
+                </div>
+            `;
+        });
+}
+
+document.getElementById('explain-btn').addEventListener('click', function() {
+    const term = "{{ term.term_en }}";
+    const language = localStorage.getItem('language') || 'en';
+    const explanationDiv = document.getElementById('ai-explanation');
+    explanationDiv.innerHTML = "Loading AI explanation...";
+
+    fetch('/api/explain', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({term: term, term_id: termId, language: language})
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.explanation) {
+            explanationDiv.innerHTML = `<strong>AI Explanation:</strong> ${data.explanation}`;
+        } else {
+            explanationDiv.innerHTML = `<span class="text-danger">Error: ${data.error}</span>`;
+        }
+    })
+    .catch(err => {
+        explanationDiv.innerHTML = `<span class="text-danger">Error: ${err}</span>`;
+    });
+});
+</script>
+{% endblock %}
